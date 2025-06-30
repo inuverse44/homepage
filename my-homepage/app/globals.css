@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f9fafb; /* 少しだけグレーの背景色 */
+  color: #111827; /* 基本の文字色 */
+}
