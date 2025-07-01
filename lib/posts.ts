@@ -12,6 +12,36 @@ import rehypeStringify from 'rehype-stringify';
 
 const postsDirectory = path.join(process.cwd(), 'contents');
 
+export function getSortedPostsData() {
+  // /posts　配下のファイル名を取得する
+  const fileNames = fs.readdirSync(postsDirectory);
+  const allPostsData = fileNames.map((fileName) => {
+    // id を取得するためにファイル名から「.md」を削除する
+    const slug = fileName.replace(/\.md$/, '');
+
+    // マークダウンファイルを文字列として読み取る
+    const fullPath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+    // gray-matter を使って投稿のメタデータ部分を解析する
+    const matterResult = matter(fileContents);
+
+    // データを id と合わせる
+    return {
+      slug,
+      ...(matterResult.data as { title: string; date: string; tags?: string[] }),
+    };
+  });
+  // 投稿を日付でソートする
+  return allPostsData.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+}
+
 export function getAllPostSlugs() {
   const fileNames = fs.readdirSync(postsDirectory);
   return fileNames.map((fileName) => {
@@ -41,6 +71,6 @@ export async function getPostData(slug: string) {
   return {
     slug,
     contentHtml,
-    ...(matterResult.data as { title: string; date: string }),
+    ...(matterResult.data as { title: string; date: string; tags: string[] }),
   };
 }
