@@ -42,6 +42,16 @@ export function getSortedPostsData() {
   });
 }
 
+export function getAllTags() {
+  const allPosts = getSortedPostsData();
+  const tags = new Set<string>();
+  allPosts.forEach(post => {
+    post.tags?.forEach(tag => tags.add(tag));
+  });
+  return Array.from(tags);
+}
+
+
 export function getAllPostSlugs() {
   const fileNames = fs.readdirSync(postsDirectory);
   return fileNames.map((fileName) => {

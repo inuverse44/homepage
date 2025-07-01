@@ -1,22 +1,13 @@
-import Link from "next/link";
-import { getSortedPostsData } from "@/lib/posts";
+import { getSortedPostsData, getAllTags } from "@/lib/posts";
+import PostFilter from "./PostFilter";
 
 export default function Home() {
   const allPostsData = getSortedPostsData();
+  const allTags = getAllTags();
+
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">新着記事</h1>
-      <ul>
-        {allPostsData.map(({ slug, title, date }) => (
-          <li key={slug}>
-            <Link href={`/blog/${slug}`} className="text-blue-600 hover:underline">
-              {title}
-            </Link>
-            <br />
-            <small className="text-gray-500">{date}</small>
-          </li>
-        ))}
-      </ul>
+      <PostFilter posts={allPostsData} tags={allTags} />
     </div>
   );
 }
