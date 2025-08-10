@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts'))
+  .filter((p) => p.data.draft !== true && p.data.lang === 'ja');
+const tagMap = new Map<string, number>();
+for (const p of posts) {
+  for (const t of p.data.tags ?? []) {
+    const key = t.toLowerCase().replace(/\s+/g,'-');
+    tagMap.set(key, (tagMap.get(key) ?? 0) + 1);
+  }
+}
+const tags = Array.from(tagMap.entries()).sort((a,b) => a[0].localeCompare(b[0]));
+---
+<BaseLayout title="Tags">
+  <h1>タグ</h1>
+  <ul>
+    {tags.map(([t, count]) => (
+      <li><a href={`/tags/${t}/`}>{t}</a> ({count})</li>
+    ))}
+  </ul>
+</BaseLayout>
+

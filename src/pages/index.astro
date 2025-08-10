@@ -1,0 +1,36 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostCard from '@components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('posts');
+const posts = all
+  .filter((p) => p.data.draft !== true && p.data.lang === 'ja')
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 6);
+---
+<BaseLayout title="Home">
+  <section>
+    <h1>🚧工事中🚧</h1>
+    <p>これは自己紹介とブログのサイトです。最新の投稿をいくつか掲載します。</p>
+  </section>
+  <section>
+    <h2>最新記事</h2>
+    <div class="post-grid">
+      {posts.map((p) => {
+        const s = p.slug.split('/').pop();
+        return (
+        <PostCard
+          href={`/blog/${s}/`}
+          title={p.data.title}
+          description={p.data.description}
+          date={p.data.date}
+          hero={p.data.hero}
+          tags={p.data.tags}
+        />
+        );
+      })}
+    </div>
+    <p style="margin-top:1rem;"><a href="/blog/">すべての投稿を見る →</a></p>
+  </section>
+</BaseLayout>

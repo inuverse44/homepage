@@ -1,0 +1,32 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PostCard from '@components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const PAGE_SIZE = 10;
+const all = await getCollection('posts');
+const posts = all
+  .filter((p) => p.data.draft !== true && p.data.lang === 'ja')
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const pagePosts = posts.slice(0, PAGE_SIZE);
+const hasMore = posts.length > PAGE_SIZE;
+---
+<BaseLayout title="Blog">
+  <h1>ブログ</h1>
+  <div class="post-grid">
+    {pagePosts.map((p) => {
+      const s = p.slug.split('/').pop();
+      return (
+      <PostCard
+        href={`/blog/${s}/`}
+        title={p.data.title}
+        description={p.data.description}
+        date={p.data.date}
+        hero={p.data.hero}
+        tags={p.data.tags}
+      />
+      );
+    })}
+  </div>
+  {hasMore && <p style="margin-top:1rem;"><a href="/blog/page/2/">次のページ →</a></p>}
+</BaseLayout>

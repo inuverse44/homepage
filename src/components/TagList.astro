@@ -1,0 +1,9 @@
+---
+interface Props { tags: string[] }
+const { tags } = Astro.props;
+const toSlug = (t: string) => t.toLowerCase().replace(/\s+/g,'-');
+---
+<div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+  {tags.map((t) => <a href={`/tags/${toSlug(t)}/`} class="tag">{t}</a>)}
+</div>
+

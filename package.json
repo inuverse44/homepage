@@ -1,0 +1,24 @@
+{
+  "name": "homepage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^4.6.0",
+    "@astrojs/react": "^3.0.0",
+    "@astrojs/rss": "^4.0.0",
+    "@astrojs/sitemap": "^3.0.0",
+    "katex": "^0.16.9",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^6.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "zod": "^3.23.8"
+  }
+}
