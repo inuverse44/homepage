@@ -6,7 +6,7 @@ import rehypeKatex from 'rehype-katex';
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
-  site: 'https://example.com', // TODO: set real domain
+  site: 'https://storage.googleapis.com/inuverse-homepage',
   integrations: [react(), sitemap()],
   markdown: {
     shikiConfig: { theme: 'nord' },
