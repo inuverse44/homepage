@@ -1,0 +1,74 @@
+name: Deploy to GCS (Production)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  GCS_BUCKET_NAME: ${{ vars.GCS_BUCKET_NAME }}
+  WIF_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.WIF_WORKLOAD_IDENTITY_PROVIDER }}
+  WIF_SERVICE_ACCOUNT_EMAIL: ${{ vars.WIF_SERVICE_ACCOUNT_EMAIL }}
+  CDN_URL_MAP_NAME: ${{ vars.CDN_URL_MAP_NAME }} # optional
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          ASTRO_TELEMETRY_DISABLED: "1"
+
+      - name: Auth to Google Cloud (WIF)
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WIF_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.WIF_SERVICE_ACCOUNT_EMAIL }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Upload to GCS (rsync)
+        run: |
+          gsutil -m rsync -r -d ./dist gs://${GCS_BUCKET_NAME}
+
+      - name: Configure GCS website (index/404)
+        run: |
+          gsutil web set -m index.html -e 404.html "gs://${GCS_BUCKET_NAME}" || true
+
+      - name: Set cache headers for HTML (no-cache)
+        run: |
+          gsutil -m setmeta -h "Cache-Control:no-cache, max-age=0" "gs://${GCS_BUCKET_NAME}/**/*.html" || true
+
+      - name: Set cache headers for static assets (immutable)
+        run: |
+          for ext in css js mjs cjs png jpg jpeg gif webp avif svg ico woff woff2 ttf otf json xml txt map; do
+            gsutil -m setmeta -h "Cache-Control:public, max-age=31536000, immutable" "gs://${GCS_BUCKET_NAME}/**/*.${ext}" || true
+          done
+
+      - name: Invalidate Cloud CDN cache (optional)
+        if: env.CDN_URL_MAP_NAME != ''
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache "$CDN_URL_MAP_NAME" --path "/*" --project "$GCP_PROJECT_ID"
