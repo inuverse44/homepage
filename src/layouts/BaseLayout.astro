@@ -31,13 +31,13 @@ import { withBase, withBaseIfAbsolute } from '@lib/paths';
   </head>
   <body>
     <header class="container">
-      <nav style="display:flex;gap:1rem;align-items:center;justify-content:space-between;">
-        <div style="display:flex;gap:1rem;align-items:center;">
+      <nav class="nav">
+        <div class="nav-left">
           <a href={withBase('')}>Home</a>
           <a href={withBase('blog/')}>Blog</a>
           <a href={withBase('tags/')}>Tags</a>
         </div>
-        <div style="display:flex;gap:0.75rem;">
+        <div class="nav-right">
           <a href="kodamatrix44@gmail.com" aria-label="Email">Email</a>
           <a href="https://x.com/mochi_dog_phys" target="_blank" rel="noopener noreferrer">X</a>
           <a href="https://github.com/inuverse44" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -47,7 +47,7 @@ import { withBase, withBaseIfAbsolute } from '@lib/paths';
     <main>
       <slot />
     </main>
-    <footer class="container" style="color:var(--muted);">
+    <footer class="container muted-text">
       <p>© {new Date().getFullYear()} Inuverse</p>
     </footer>
   </body>
