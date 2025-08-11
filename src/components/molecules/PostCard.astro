@@ -1,0 +1,41 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  date: string | Date;
+  hero?: string;
+  tags?: string[];
+}
+const { href, title, description, date, hero, tags = [] } = Astro.props;
+const d = new Date(date);
+import { withBase, withBaseIfAbsolute } from '@lib/paths';
+import TagChip from '@atoms/TagChip.astro';
+---
+<article class="card">
+  <a href={href} class="card-link">
+    {hero && <img class="card-img" src={withBaseIfAbsolute(hero)} alt="" loading="lazy" />}
+    <div class="card-body">
+      <h3 style="margin:0 0 0.25rem 0;">{title}</h3>
+      <p class="meta">
+        <time datetime={d.toISOString()}>{d.toLocaleDateString('ja-JP')}</time>
+      </p>
+      {description && <p class="desc">{description}</p>}
+      {tags.length > 0 && (
+        <p class="tags">
+          {tags.map((t) => <TagChip href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} label={t} />)}
+        </p>
+      )}
+    </div>
+  </a>
+</article>
+
+<style>
+.card { border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; background:#fff; }
+.card-link { color:inherit; text-decoration:none; display:block; }
+.card-img { width:100%; height:160px; object-fit:cover; }
+.card-body { padding:0.75rem 1rem; }
+.meta { margin:0; color:var(--muted); font-size:0.9rem; }
+.desc { margin:0.5rem 0 0 0; color:var(--muted); }
+.tags { margin:0.5rem 0 0 0; display:flex; gap:0.25rem; flex-wrap:wrap; }
+</style>

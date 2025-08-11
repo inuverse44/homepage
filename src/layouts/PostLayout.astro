@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { withBase, withBaseIfAbsolute } from '@lib/paths';
+import TagChip from '@atoms/TagChip.astro';
 interface Props {
   title: string;
   description?: string;
@@ -17,14 +18,19 @@ const ogImage = hero ? new URL(withBaseIfAbsolute(hero)!, site).toString() : und
 ---
 <BaseLayout title={title} description={description} ogType="article" ogImage={ogImage} canonical={canonical}>
   <article>
-    {hero && <img src={withBaseIfAbsolute(hero)} alt="" style="border-radius:8px; margin-bottom:1rem;" loading="lazy" />}
+    {hero && <img class="hero-img" src={withBaseIfAbsolute(hero)} alt="" loading="lazy" />}
     <h1>{title}</h1>
-    <p style="color:var(--muted); font-size:0.95rem;">
+    <p class="post-meta">
       <time datetime={date.toISOString()}>{date.toLocaleDateString('ja-JP')}</time>
       {tags.length > 0 && (
-        <span> · {tags.map((t, i) => <a href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} class="tag" style="margin-right:0.25rem;">{t}</a>)}</span>
+        <span> · {tags.map((t) => <TagChip href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} label={t} />)}</span>
       )}
     </p>
     <slot />
   </article>
 </BaseLayout>
+
+<style>
+.hero-img { border-radius:8px; margin-bottom:1rem; }
+.post-meta { color:var(--muted); font-size:0.95rem; }
+</style>

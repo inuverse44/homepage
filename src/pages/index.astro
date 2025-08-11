@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
-import PostCard from '@components/PostCard.astro';
+import PostCard from '@molecules/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '@lib/paths';
 
@@ -12,8 +12,10 @@ const posts = all
 ---
 <BaseLayout title="Home">
   <section>
-    <h1>🚧工事中🚧</h1>
-    <p>これは自己紹介とブログのサイトです。最新の投稿をいくつか掲載します。</p>
+    <h1>Inuverseのホームページ</h1>
+    <p>このページでは、物理学やIT技術関連の記事、旅行記、雑記などをまとめています。</p>
+    <p>Inuverseとは僕の好きな動物の犬と宇宙 (universe) を合わせた造語です。</p>
+    <p>特に意味はありません</p>
   </section>
   <section>
     <h2>最新記事</h2>
