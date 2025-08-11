@@ -5,7 +5,7 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+  
 jobs:
   build-and-deploy:
     name: Build and Deploy
@@ -17,7 +17,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -46,3 +45,4 @@ jobs:
           process_gcloud_output: false
           headers: |
             cache-control: public, max-age=3600
+
