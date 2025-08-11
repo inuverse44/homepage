@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import { withBase, withBaseIfAbsolute } from '@lib/paths';
 interface Props {
   title: string;
   description?: string;
@@ -10,18 +11,18 @@ interface Props {
 const { title, description, hero, pubDate, tags = [] } = Astro.props;
 const date = new Date(pubDate);
 const site = Astro.site?.toString() ?? 'http://localhost:4321/';
-const canonical = new URL(Astro.url.pathname, site).toString();
-const base = new URL(Astro.url.pathname, site);
-const ogImage = hero ? new URL(hero, base).toString() : undefined;
+const cleanPath = Astro.url.pathname.replace(/^\//, '');
+const canonical = new URL(withBase(cleanPath), site).toString();
+const ogImage = hero ? new URL(withBaseIfAbsolute(hero)!, site).toString() : undefined;
 ---
 <BaseLayout title={title} description={description} ogType="article" ogImage={ogImage} canonical={canonical}>
   <article>
-    {hero && <img src={hero} alt="" style="border-radius:8px; margin-bottom:1rem;" loading="lazy" />}
+    {hero && <img src={withBaseIfAbsolute(hero)} alt="" style="border-radius:8px; margin-bottom:1rem;" loading="lazy" />}
     <h1>{title}</h1>
     <p style="color:var(--muted); font-size:0.95rem;">
       <time datetime={date.toISOString()}>{date.toLocaleDateString('ja-JP')}</time>
       {tags.length > 0 && (
-        <span> · {tags.map((t, i) => <a href={`/tags/${t.toLowerCase().replace(/\s+/g,'-')}/`} class="tag" style="margin-right:0.25rem;">{t}</a>)}</span>
+        <span> · {tags.map((t, i) => <a href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} class="tag" style="margin-right:0.25rem;">{t}</a>)}</span>
       )}
     </p>
     <slot />

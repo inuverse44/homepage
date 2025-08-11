@@ -2,6 +2,7 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import PostCard from '@components/PostCard.astro';
 import { getCollection } from 'astro:content';
+import { withBase } from '@lib/paths';
 
 const PAGE_SIZE = 10;
 const all = await getCollection('posts');
@@ -18,7 +19,7 @@ const hasMore = posts.length > PAGE_SIZE;
       const s = p.slug.split('/').pop();
       return (
       <PostCard
-        href={`/blog/${s}/`}
+        href={withBase(`blog/${s}/`)}
         title={p.data.title}
         description={p.data.description}
         date={p.data.date}
@@ -28,5 +29,5 @@ const hasMore = posts.length > PAGE_SIZE;
       );
     })}
   </div>
-  {hasMore && <p style="margin-top:1rem;"><a href="/blog/page/2/">次のページ →</a></p>}
+  {hasMore && <p style="margin-top:1rem;"><a href={withBase('blog/page/2/')}>次のページ →</a></p>}
 </BaseLayout>
