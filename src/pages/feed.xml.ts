@@ -11,7 +11,8 @@ export async function GET(context) {
     description: 'Latest posts',
     site: context.site!,
     items: posts.map((p) => ({
-      link: `/blog/${p.slug.split('/').pop()}/`,
+      // Use a relative link so it joins correctly with `site` including base path
+      link: `blog/${p.slug.split('/').pop()}/`,
       title: p.data.title,
       description: p.data.description,
       pubDate: new Date(p.data.date),

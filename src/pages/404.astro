@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from '@lib/paths';
 const title = "ページが見つかりません";
 const description = "お探しのページは存在しないか、移動しました。";
 ---
@@ -8,7 +9,6 @@ const description = "お探しのページは存在しないか、移動しま�
   <main class="container" style="max-width: 768px; margin: 2rem auto; padding: 0 1rem;">
     <h1>404 Not Found</h1>
     <p>お探しのページは存在しないか、移動しました。</p>
-    <p><a href="/">トップページに戻る</a></p>
+    <p><a href={withBase('')}>トップページに戻る</a></p>
   </main>
 </BaseLayout>
-

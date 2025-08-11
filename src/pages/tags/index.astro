@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { withBase } from '@lib/paths';
 
 const posts = (await getCollection('posts'))
   .filter((p) => p.data.draft !== true && p.data.lang === 'ja');
@@ -17,8 +18,7 @@ const tags = Array.from(tagMap.entries()).sort((a,b) => a[0].localeCompare(b[0])
   <h1>タグ</h1>
   <ul>
     {tags.map(([t, count]) => (
-      <li><a href={`/tags/${t}/`}>{t}</a> ({count})</li>
+      <li><a href={withBase(`tags/${t}/`)}>{t}</a> ({count})</li>
     ))}
   </ul>
 </BaseLayout>
-
