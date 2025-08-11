@@ -9,7 +9,8 @@ interface Props {
 }
 const { href, title, description, date, hero, tags = [] } = Astro.props;
 const d = new Date(date);
-import { withBaseIfAbsolute } from '@lib/paths';
+import { withBase, withBaseIfAbsolute } from '@lib/paths';
+import TagChip from '@atoms/TagChip.astro';
 ---
 <article style="border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; background:#fff;">
   <a href={href} style="color:inherit; text-decoration:none; display:block;">
@@ -21,8 +22,8 @@ import { withBaseIfAbsolute } from '@lib/paths';
       </p>
       {description && <p style="margin:0.5rem 0 0 0; color:var(--muted);">{description}</p>}
       {tags.length > 0 && (
-        <p style="margin:0.5rem 0 0 0;">
-          {tags.map((t) => <a href={withBaseIfAbsolute(`/tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} class="tag" style="margin-right:0.25rem;">{t}</a>)}
+        <p style="margin:0.5rem 0 0 0; display:flex; gap:0.25rem; flex-wrap:wrap;">
+          {tags.map((t) => <TagChip href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} label={t} />)}
         </p>
       )}
     </div>
