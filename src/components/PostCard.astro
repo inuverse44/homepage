@@ -9,10 +9,11 @@ interface Props {
 }
 const { href, title, description, date, hero, tags = [] } = Astro.props;
 const d = new Date(date);
+import { withBaseIfAbsolute } from '@lib/paths';
 ---
 <article style="border:1px solid #e5e7eb; border-radius:8px; overflow:hidden; background:#fff;">
   <a href={href} style="color:inherit; text-decoration:none; display:block;">
-    {hero && <img src={hero} alt="" loading="lazy" style="width:100%; height:160px; object-fit:cover;" />}
+    {hero && <img src={withBaseIfAbsolute(hero)} alt="" loading="lazy" style="width:100%; height:160px; object-fit:cover;" />}
     <div style="padding:0.75rem 1rem;">
       <h3 style="margin:0 0 0.25rem 0;">{title}</h3>
       <p style="margin:0; color:var(--muted); font-size:0.9rem;">
@@ -21,10 +22,9 @@ const d = new Date(date);
       {description && <p style="margin:0.5rem 0 0 0; color:var(--muted);">{description}</p>}
       {tags.length > 0 && (
         <p style="margin:0.5rem 0 0 0;">
-          {tags.map((t) => <a href={`/tags/${t.toLowerCase().replace(/\s+/g,'-')}/`} class="tag" style="margin-right:0.25rem;">{t}</a>)}
+          {tags.map((t) => <a href={withBaseIfAbsolute(`/tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} class="tag" style="margin-right:0.25rem;">{t}</a>)}
         </p>
       )}
     </div>
   </a>
 </article>
-
