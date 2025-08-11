@@ -33,3 +33,9 @@ Thumbs.db
 # Coverage
 coverage/
 
+# LLM CLI
+AGENTS.md
+GEMINI.md
+doc.md
+DEPLOYMENT.md
+SPEC.md
