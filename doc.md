@@ -12,3 +12,6 @@ REPO="inuverse44/homepage" ./scripts/setup-gcp-wif.sh
  gcloud iam workload-identity-pools delete github-pool \
     　　--project=inuverse-homepage \
    　　　--location=global --quiet
+
+
+gcloud storage buckets update gs://inuverse-homepage --no-public-access-prevention
