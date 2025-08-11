@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import { withBase, withBaseIfAbsolute } from '@lib/paths';
+import TagChip from '@atoms/TagChip.astro';
 interface Props {
   title: string;
   description?: string;
@@ -22,7 +23,7 @@ const ogImage = hero ? new URL(withBaseIfAbsolute(hero)!, site).toString() : und
     <p style="color:var(--muted); font-size:0.95rem;">
       <time datetime={date.toISOString()}>{date.toLocaleDateString('ja-JP')}</time>
       {tags.length > 0 && (
-        <span> · {tags.map((t, i) => <a href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} class="tag" style="margin-right:0.25rem;">{t}</a>)}</span>
+        <span> · {tags.map((t) => <TagChip href={withBase(`tags/${t.toLowerCase().replace(/\s+/g,'-')}/`)} label={t} />)}</span>
       )}
     </p>
     <slot />
