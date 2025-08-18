@@ -46,7 +46,9 @@ $$
 ### 演算子の関数の表現
 演算子$\hat{A}$をスペクトル分解すると
 $$
+\begin{align}
     \hat{A} = \sum_k \bar{a}_k \hat{P}_{\bar{a}_k}
+\end{align}
 $$
 と表される。$\hat{P}_{\bar{a}_k}$は$\bar{a}_k$が属する固有空間の射影演算子である。
 このとき$f(\hat{A})$を次で定義する。
@@ -73,7 +75,23 @@ $$
     \hat{\rho}
     = \sum_k \lambda_k \ket{\xi_k}\bra{\xi_k}
 $$
-とできます。$\ket{\xi} \bra{\xi_k}$は$\lambda_k$が属する固有空間への射影演算子です。
+とできます。$\ket{\xi_k} \bra{\xi_k}$は$\lambda_k$が属する固有空間への射影演算子です。
+
+この表現を使うことで、
+$$
+\begin{align}
+    S(\hat{\rho})
+    &= - {\rm Tr}\left[
+        \sum_k \lambda_k \ln \lambda_k \ket{\xi_k} \bra{\xi_k}
+    \right] \notag \\
+    &= - \sum_k \lambda_k \ln \lambda_k {\rm Tr} \left[
+        \ket{\xi_k} \bra{\xi_k}
+    \right] \notag \\
+    &= - \sum_k \lambda_k \ln \lambda_k
+\end{align}
+$$
+とも表現できます。
+
 
 
 ## 参考文献
